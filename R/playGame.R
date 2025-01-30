@@ -3,16 +3,17 @@
 #' @description Launches a game that you can play on the console. Mainly used for testing.
 #'
 #' @param seed Seed used when generating random numbers. Primarily used for testing purposes.
-#' @param replaceColours Logical value describing if the same colour is allowed more than once. So far, only FALSE is implemented.
+#' @param replaceColours Logical value describing if the same colour is allowed more than once. So far, only \code{FALSE} is implemented.
+#' @param printTruth Logical value describing whether or not the true colours should be printed. Should only be set to \code{TRUE} for testing.
 #' @return Nothing, launches a console game
-playGame <- function(seed, replaceColours=FALSE) {
+playGame <- function(seed, replaceColours=FALSE, printTruth = FALSE) {
   if(!missing(seed)) {
       set.seed(seed)
     }
   TRUTH <<- sample(x = SELECTABLE_COLOURS_CHAR, size = 4, replace = replaceColours)
 
   print("I have thought of a 4-digit code containing the following colours:")
-  print(SELECTABLE_COLOURS_CHAR)
+  print(paste(SELECTABLE_COLOURS_CHAR, collapse = ", "))
 
   if(replaceColours) {
     print("Repetitions of the same colour are allowed")
@@ -24,7 +25,9 @@ playGame <- function(seed, replaceColours=FALSE) {
   print("Can you guess the code?")
 
 
-  print(paste0(c("Truth:", TRUTH), collapse = " "))
+  if(printTruth) {
+    print(paste0(c("Truth:", TRUTH), collapse = " "))
+  }
 
   roundCounter <- 0
 

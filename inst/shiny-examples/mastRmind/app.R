@@ -50,7 +50,7 @@ ui <- fluidPage(
     # Application title
     titlePanel("mastRmind"),
 
-    # Sidebar with a slider input for number of bins
+    # Sidebar with action buttons for colour input
     sidebarLayout(
         sidebarPanel(
             actionButton(inputId = "restart", label = "Restart game"),
@@ -81,12 +81,14 @@ ui <- fluidPage(
     )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic to draw the guesses plot
 server <- function(input, output) {
 
+  # Guess counter
     output$counter <- renderText(
       paste0("Guess ", guessCounter, " of 10")
     )
+    # Plot output
     output$board <- renderPlot({
       ggplot(data = NULL) + scale_y_continuous(breaks = 1:10, limits = c(1, 10)) +
         scale_x_continuous(labels = c("1", "2", "3", "4", "Correct \nColours","Correct \nSlots"), breaks = 1:6, limits = c(1, 6)) +
@@ -96,33 +98,38 @@ server <- function(input, output) {
     # Guess button
     observeEvent(input$makeGuess, {
 
+      # If guessCounter reaches 11, the game is over
       if(guessCounter < 11) {
 
-      # guess slot colour
+      # Plot data for guess
       data_colours$guess[((guessCounter-1)*4+1):(guessCounter*4)] <<- guessCounter
       data_colours$slot[((guessCounter-1)*4+1):(guessCounter*4)] <<- 1:4
       data_colours$colour[((guessCounter-1)*4+1):(guessCounter*4)] <<-
         c(input$choice1, input$choice2, input$choice3, input$choice4)
 
-
+      # Check guess
       checkedGuess <- mastRmind::checkGuess(guess = c(input$choice1, input$choice2, input$choice3, input$choice4))
 
-      # guess count slot
+      # Plot data for results
       data_guesses$guess[((guessCounter-1)*2+1):(guessCounter*2)] <<- guessCounter
       data_guesses$slot[((guessCounter-1)*2+1):(guessCounter*2)] <<- c(5,6)
       data_guesses$count[((guessCounter-1)*2+1):(guessCounter*2)] <<- c(checkedGuess$correctColours, checkedGuess$correctSlots)
 
+      # Check for double guesses
       if(length(intersect(c(input$choice1, input$choice2, input$choice3, input$choice4), c(input$choice1, input$choice2, input$choice3, input$choice4)))
          < length(c(input$choice1, input$choice2, input$choice3, input$choice4))) {
       showNotification("You reused some colours. Guess again", type = "error")
       }
+      # Game won
       else if(victory) {
         showNotification("You won! Restart the game to play again.")
       }
+      # Game continues
       else {
       guessCounter <<- guessCounter + 1
       showNotification(paste0("Guess ", guessCounter-1, " counted"), type = "message")
 
+      # Redraw plot
       output$board <- renderPlot({
         ggplot(data = data_colours) + geom_point(mapping=aes(x = slot, y = guess), colour = data_colours$colour, size = 12) +
           geom_text(data = data_guesses, mapping = aes(label = count, x = slot, y = guess), size = 8) + scale_colour_discrete(guide = "none") +
@@ -148,7 +155,7 @@ server <- function(input, output) {
             victory <<- TRUE
           }
 
-
+          # Game lost
           if(guessCounter > 10 && !victory) {
 
             readableTruth <- TRUTH
@@ -172,6 +179,7 @@ server <- function(input, output) {
         showNotification("Out of guesses - restart the game", type = "warning")
       }
     })
+    # Restart game button
   observeEvent(input$restart, {
     # Create new truth, reset guess counter
     TRUTH <<- sample(x = SELECTABLE_COLOURS_CHAR, size = 4, replace = FALSE)
