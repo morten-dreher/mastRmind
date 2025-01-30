@@ -31,7 +31,7 @@ img(src = "orange.png", width = 20, height = 20)
 SELECTABLE_COLOURS_CHAR <- c("red", "forestgreen", "blue", "yellow", "purple", "orange")
 READABLE_COLOUR_NAMES <- c("Red", "Green", "Blue", "Yellow", "Purple", "Orange")
 
-CONGRATUALTORY_PHRASES <- c("good job!", "excellent work!", "well done!", "congratulations!", "you must be Sherlock Holmes!")
+CONGRATULATORY_PHRASES <- c("good job!", "excellent work!", "well done!", "congratulations!", "you must be Sherlock Holmes!")
 
 TRUTH <<- sample(x = SELECTABLE_COLOURS_CHAR, size = 4, replace = FALSE)
 guessCounter <<- 1
@@ -144,7 +144,7 @@ server <- function(input, output) {
             beep(sound = 3)
             Sys.sleep(4)
 
-            phrase <- CONGRATUALTORY_PHRASES[ceiling(runif(1, min = 0, max = length(CONGRATUALTORY_PHRASES)))]
+            phrase <- CONGRATULATORY_PHRASES[ceiling(runif(1, min = 0, max = length(CONGRATULATORY_PHRASES)))]
 
             showModal(modalDialog(
               title = "Victory!",
