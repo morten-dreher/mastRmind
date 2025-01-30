@@ -1,0 +1,24 @@
+---
+title: "manual"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{manual}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(mastRmind)
+```
+
+This is a tiny vignette and only tells you to use `playShinyGame()` if you would like to get started.
+Have fun with the package!
+
+Bug reports can be sent to the package author at morten.dreher@outlook.de

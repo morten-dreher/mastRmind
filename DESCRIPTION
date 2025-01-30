@@ -1,0 +1,21 @@
+Package: mastRmind
+Title: Play Mastermind
+Version: 0.0.1
+Authors@R: 
+    person("Morten", "Dreher", , "morten.dreher@outlook.de", role = c("aut", "cre"))
+Description: This package allows you to play Mastermind via console or a Shiny app.
+License: GPL (>= 3)
+Imports:
+  shiny,
+  beepr
+Requires:
+  shiny,
+  beepr,
+  ggplot2
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
