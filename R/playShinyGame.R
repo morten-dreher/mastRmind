@@ -12,6 +12,5 @@ playShinyGame <- function(replaceColours = FALSE) {
     stop("Could not find directory. Try re-installing package")
   }
 
-
   shiny::runApp(appDir, display.mode = "normal")
 }
